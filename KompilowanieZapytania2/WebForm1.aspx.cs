@@ -22,5 +22,26 @@ namespace KompilowanieZapytania2
                 GridView1.DataBind();
             }
         }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            using (SampleDataContext sdc = new SampleDataContext())
+            {
+                IEnumerable<Students> s = sdc.ExecuteQuery<Students>("Select * from Students where Gender = 'Male'");
+                GridView2.DataSource = s.ToList();
+                GridView2.DataBind();
+            }
+        }
+
+        protected void Button2_Click(object sender, EventArgs e)
+        {
+            using (SampleDataContext sdc = new SampleDataContext())
+            {
+                sdc.ExecuteCommand("Update Students set Gender='Female' where Gender='Male'");
+                GridView2.DataSource = from s in sdc.Students
+                                       select s;
+                GridView2.DataBind();
+            }
+        }
     }
 }
